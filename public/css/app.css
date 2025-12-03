@@ -1,6 +1,7 @@
 /**
- * App Aide Alzheimer - CSS Global
+ * App Aide Alzheimer - CSS Mobile-Only
  * Architecture : Variables CSS + Mobile-First + Accessibilité
+ * IMPORTANT : Application conçue UNIQUEMENT pour mobile
  */
 
 /* ===========================
@@ -62,455 +63,737 @@ body {
   font-size: 16px;
   line-height: 1.5;
   touch-action: manipulation;
+  
+  /* Désactiver la sélection de texte (UX mobile) */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-/* ===========================
-   LAYOUT PRINCIPAL
-   =========================== */
-.app {
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ===========================
-   HEADER
-   =========================== */
-header {
-  flex-shrink: 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--outline);
-  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: space-between;
-}
-
-.brandRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.sos {
-  min-height: var(--tap);
-  min-width: var(--tap);
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: var(--danger);
-  color: #fff;
-  font-weight: 900;
-  font-size: 15px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.sos:active {
-  transform: scale(0.95);
-}
-
-.userInfo {
-  flex: 1;
-  min-width: 0;
-}
-
-.title {
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.2;
-  margin: 0;
-}
-
-.sub {
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 2px;
-}
-
-.headerActions {
-  display: flex;
-  gap: 8px;
-}
-
-.iconBtn {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 0;
-  border: none;
-  border-radius: 12px;
-  background: var(--elev);
-  color: var(--text);
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.iconBtn:active {
-  transform: scale(0.95);
-}
-
-/* ===========================
-   MAIN CONTENT (Scrollable)
-   =========================== */
-main {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  padding: 16px 16px calc(80px + env(safe-area-inset-bottom));
-}
-
-/* ===========================
-   CARDS
-   =========================== */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--outline);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
-
-.card:last-child {
-  margin-bottom: 0;
-}
-
-.card h3 {
-  margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
+/* Permettre la sélection uniquement dans les zones de texte */
+input,
+textarea,
+.noteContent,
 .muted {
-  color: var(--muted);
-  font-size: 14px;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 /* ===========================
-   BUTTONS
+   PROTECTION DESKTOP
    =========================== */
-.btn {
-  min-height: var(--tap);
-  padding: 0 20px;
-  border: none;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  background: var(--brand);
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  white-space: nowrap;
-  text-decoration: none;
-}
-
-.btn:active {
-  transform: scale(0.98);
-  opacity: 0.9;
-}
-
-.btn.secondary {
-  background: var(--elev);
-  color: var(--text);
-  border: 1px solid var(--outline);
-}
-
-.btn.ghost {
-  background: transparent;
-  border: 1px dashed var(--outline);
-}
-
-.btn.full {
-  width: 100%;
-  margin-top: 12px;
-}
-
-.btnRow {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-
-.btnGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
+@media (min-width: 769px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+  }
+  
+  body::after {
+    content: "📱 Cette application est conçue uniquement pour mobile.\A\A Veuillez ouvrir ce site sur votre smartphone ou réduire la largeur de votre fenêtre.";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    color: var(--text);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    white-space: pre-wrap;
+    max-width: 500px;
+    padding: 40px;
+    background: var(--surface);
+    border: 2px solid var(--outline);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+  }
+  
+  /* Masquer tout le contenu sur desktop */
+  .app,
+  nav,
+  .backdrop,
+  .toasts,
+  .sheet {
+    display: none !important;
+  }
 }
 
 /* ===========================
-   PILLS
+   LAYOUT PRINCIPAL (Mobile uniquement)
    =========================== */
-.pill {
-  min-height: 48px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid var(--outline);
-  background: var(--elev);
-  color: var(--text);
-  font-size: 22px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+@media (max-width: 768px) {
+  .app {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 
-.pill:active {
-  transform: scale(0.95);
-}
+  /* ===========================
+     HEADER
+     =========================== */
+  header {
+    flex-shrink: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--outline);
+    padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
 
-.pill.selected {
-  border-color: var(--brand);
-  background: var(--brand);
-  color: white;
-}
+  .brandRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
 
-.pillRow {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
+  .sos {
+    min-height: var(--tap);
+    min-width: var(--tap);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--danger);
+    color: #fff;
+    font-weight: 900;
+    font-size: 15px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .sos:active {
+    transform: scale(0.95);
+  }
+
+  .userInfo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .title {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .headerActions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .iconBtn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: var(--elev);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .iconBtn:active {
+    transform: scale(0.95);
+  }
+
+  /* ===========================
+     MAIN CONTENT (Scrollable)
+     =========================== */
+  main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 16px calc(80px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+  }
+
+  /* Smooth scrolling */
+  main {
+    scroll-behavior: smooth;
+  }
+
+  /* ===========================
+     CARDS
+     =========================== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--outline);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .card:last-child {
+    margin-bottom: 0;
+  }
+
+  .card h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ===========================
+     BUTTONS
+     =========================== */
+  .btn {
+    min-height: var(--tap);
+    padding: 0 20px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    background: var(--brand);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  .btn.secondary {
+    background: var(--elev);
+    color: var(--text);
+    border: 1px solid var(--outline);
+  }
+
+  .btn.ghost {
+    background: transparent;
+    border: 1px dashed var(--outline);
+    color: var(--text);
+  }
+
+  .btn.full {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .btnRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btnGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  /* ===========================
+     PILLS
+     =========================== */
+  .pill {
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--outline);
+    background: var(--elev);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .pill:active {
+    transform: scale(0.95);
+  }
+
+  .pill.selected {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: white;
+  }
+
+  .pillRow {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  /* ===========================
+     LISTS
+     =========================== */
+  .list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+
+  .li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--outline);
+    gap: 12px;
+  }
+
+  .li:last-child {
+    border-bottom: none;
+  }
+
+  .li-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .li-right {
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* ===========================
+     PROGRESS BARS
+     =========================== */
+  .progress {
+    height: 16px;
+    border-radius: 999px;
+    background: var(--elev);
+    border: 1px solid var(--outline);
+    overflow: hidden;
+    margin: 12px 0;
+  }
+
+  .bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), #7dd3fc);
+    transition: width 0.3s ease;
+  }
+
+  /* ===========================
+     FORMS
+     =========================== */
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: var(--tap);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--outline);
+    background: var(--elev);
+    color: var(--text);
+    font-size: 16px;
+    font-family: inherit;
+    /* Empêcher le zoom automatique iOS */
+    font-size: 16px;
+  }
+
+  /* Désactiver le zoom sur focus (iOS) */
+  @supports (-webkit-touch-callout: none) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .fieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ===========================
+     BOTTOM NAVIGATION
+     =========================== */
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-top: 1px solid var(--outline);
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .tabbtn {
+    min-height: 56px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .tabbtn:active {
+    transform: scale(0.95);
+  }
+
+  .tabbtn.active {
+    background: var(--elev);
+    color: var(--brand);
+    border: 2px solid var(--brand);
+  }
+
+  .tabbtn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ===========================
+     SHEETS (Modales bottom)
+     =========================== */
+  .sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -100%;
+    max-height: 90vh;
+    background: var(--surface);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+    padding: 0 20px calc(20px + env(safe-area-inset-bottom));
+    transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .sheet.open {
+    bottom: 0;
+  }
+
+  .handle {
+    width: 40px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--outline);
+    margin: 16px auto 20px;
+  }
+
+  .sheet h4 {
+    margin: 0 0 20px;
+    font-size: 20px;
+  }
+
+  /* ===========================
+     BACKDROP
+     =========================== */
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .backdrop.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ===========================
+     TOASTS
+     =========================== */
+  .toasts {
+    position: fixed;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+    width: calc(100% - 32px);
+    max-width: 400px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: var(--elev);
+    border: 1px solid var(--outline);
+    color: var(--text);
+    padding: 16px 20px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    margin-top: 8px;
+    animation: slideUp 0.3s ease;
+    text-align: center;
+    font-weight: 500;
+    pointer-events: all;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* ===========================
+     SECTIONS (Navigation tabs)
+     =========================== */
+  section {
+    display: none;
+  }
+
+  section.active {
+    display: block;
+  }
+
+  /* ===========================
+     STATS
+     =========================== */
+  .statRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .statBox {
+    background: var(--elev);
+    border: 1px solid var(--outline);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .statValue {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--brand);
+    margin-bottom: 4px;
+  }
+
+  .statLabel {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ===========================
+     EMOJIS EXERCICES
+     =========================== */
+  .emojiGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0;
+    justify-content: center;
+  }
+
+  .emojiBtn {
+    font-size: 40px;
+    min-width: 64px;
+    min-height: 64px;
+    border: 2px solid var(--outline);
+    border-radius: 16px;
+    background: var(--elev);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .emojiBtn:active {
+    transform: scale(0.9);
+  }
+
+  .emojiBtn.selected {
+    border-color: var(--brand);
+    background: var(--brand);
+  }
+
+  /* ===========================
+     NOTES AIDANTS
+     =========================== */
+  .noteCard {
+    background: var(--elev);
+    border: 1px solid var(--outline);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .noteHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+
+  .noteContent {
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--brand);
+    color: white;
+    margin-left: 8px;
+    font-weight: 600;
+  }
+
+  .infoRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--outline);
+  }
+
+  .infoRow:last-child {
+    border-bottom: none;
+  }
+
+  /* ===========================
+     PROGRESSION EXERCICES
+     =========================== */
+  .exerciseProgress {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .progressItem {
+    padding: 12px;
+    background: var(--elev);
+    border-radius: 12px;
+    border: 1px solid var(--outline);
+  }
+
+  .progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  /* ===========================
+     GRAPHIQUES
+     =========================== */
+  .chartContainer {
+    position: relative;
+    height: 200px;
+    margin: 16px 0;
+  }
+
+  /* ===========================
+     ACCESSIBILITÉ MOBILE
+     =========================== */
+  /* Augmenter les zones tactiles */
+  button,
+  a,
+  input,
+  select {
+    min-height: 44px;
+  }
+
+  /* Focus visible pour navigation clavier */
+  *:focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  /* Empêcher le double-tap zoom */
+  * {
+    touch-action: manipulation;
+  }
+
+  /* Safe areas iOS */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    .app {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
 }
 
 /* ===========================
-   LISTS
+   ANIMATIONS GLOBALES
    =========================== */
-.list {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
-}
-
-.li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--outline);
-  gap: 12px;
-}
-
-.li:last-child {
-  border-bottom: none;
-}
-
-.li-left {
-  flex: 1;
-  min-width: 0;
-}
-
-.li-right {
-  flex-shrink: 0;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* ===========================
-   PROGRESS BARS
-   =========================== */
-.progress {
-  height: 16px;
-  border-radius: 999px;
-  background: var(--elev);
-  border: 1px solid var(--outline);
-  overflow: hidden;
-  margin: 12px 0;
-}
-
-.bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--brand), #7dd3fc);
-  transition: width 0.3s ease;
-}
-
-/* ===========================
-   FORMS
-   =========================== */
-.field {
-  margin-bottom: 16px;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.input,
-select,
-textarea {
-  width: 100%;
-  min-height: var(--tap);
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--outline);
-  background: var(--elev);
-  color: var(--text);
-  font-size: 16px;
-  font-family: inherit;
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-.fieldRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-/* ===========================
-   BOTTOM NAVIGATION
-   =========================== */
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: var(--surface);
-  border-top: 1px solid var(--outline);
-  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-}
-
-.tabs {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-
-.tabbtn {
-  min-height: 56px;
-  border-radius: 12px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px;
-  text-decoration: none;
-}
-
-.tabbtn:active {
-  transform: scale(0.95);
-}
-
-.tabbtn.active {
-  background: var(--elev);
-  color: var(--brand);
-  border: 2px solid var(--brand);
-}
-
-.tabbtn svg {
-  width: 24px;
-  height: 24px;
-}
-
-/* ===========================
-   SHEETS (Modales bottom)
-   =========================== */
-.sheet {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: -100%;
-  max-height: 90vh;
-  background: var(--surface);
-  border-radius: 24px 24px 0 0;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
-  padding: 0 20px calc(20px + env(safe-area-inset-bottom));
-  transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 200;
-  overflow-y: auto;
-}
-
-.sheet.open {
-  bottom: 0;
-}
-
-.handle {
-  width: 40px;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--outline);
-  margin: 16px auto 20px;
-}
-
-.sheet h4 {
-  margin: 0 0 20px;
-  font-size: 20px;
-}
-
-/* ===========================
-   BACKDROP
-   =========================== */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 150;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.backdrop.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* ===========================
-   TOASTS
-   =========================== */
-.toasts {
-  position: fixed;
-  bottom: calc(80px + env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 300;
-  width: calc(100% - 32px);
-  max-width: 400px;
-}
-
-.toast {
-  background: var(--elev);
-  border: 1px solid var(--outline);
-  color: var(--text);
-  padding: 16px 20px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  margin-top: 8px;
-  animation: slideUp 0.3s ease;
-  text-align: center;
-  font-weight: 500;
-}
-
 @keyframes slideUp {
   from {
     transform: translateY(20px);
@@ -522,86 +805,42 @@ nav {
   }
 }
 
-/* ===========================
-   SECTIONS (Navigation tabs)
-   =========================== */
-section {
-  display: none;
-}
-
-section.active {
-  display: block;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ===========================
-   STATS
+   UTILITIES
    =========================== */
-.statRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 16px 0;
+.hidden {
+  display: none !important;
 }
 
-.statBox {
-  background: var(--elev);
-  border: 1px solid var(--outline);
-  border-radius: 12px;
-  padding: 16px;
+.visible {
+  display: block !important;
+}
+
+.text-center {
   text-align: center;
 }
 
-.statValue {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--brand);
-  margin-bottom: 4px;
+.mt-16 {
+  margin-top: 16px;
 }
 
-.statLabel {
-  font-size: 12px;
-  color: var(--muted);
+.mb-16 {
+  margin-bottom: 16px;
 }
 
-/* ===========================
-   EMOJIS EXERCICES
-   =========================== */
-.emojiGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 16px 0;
-  justify-content: center;
-}
-
-.emojiBtn {
-  font-size: 40px;
-  min-width: 64px;
-  min-height: 64px;
-  border: 2px solid var(--outline);
-  border-radius: 16px;
-  background: var(--elev);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.emojiBtn:active {
-  transform: scale(0.9);
-}
-
-.emojiBtn.selected {
-  border-color: var(--brand);
-  background: var(--brand);
-}
-
-/* ===========================
-   RESPONSIVE
-   =========================== */
-@media (min-width: 768px) {
-  main {
-    max-width: 600px;
-    margin: 0 auto;
+@media (min-width: 769px) {
+  /* Affiche un message et masque tout */
+  body::after {
+    content: "📱 Application mobile uniquement";
   }
+  .app { display: none !important; }
 }
