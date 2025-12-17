@@ -43,6 +43,8 @@
     
     {{-- JS global --}}
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script src="{{ asset('js/modules/exercises.js') }}"></script>
     
     {{-- JS modulaire --}}
     @stack('scripts')
