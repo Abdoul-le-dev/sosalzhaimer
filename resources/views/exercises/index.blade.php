@@ -31,7 +31,7 @@
         <button class="btn" onclick="startExercise('memory')">
             ▶ Commencer
         </button>
-        <button class="btn secondary" onclick="speakText('Exercice du jour')">
+        <button class="btn secondary" onclick="speak('Exercice du jour : Mémoire visuelle')">
             🔊 Écouter
         </button>
     </div>
@@ -215,10 +215,10 @@
 </x-card>
 
 {{-- ============================================
-     ZONE D'EXERCICE (Cachée par défaut)
+     ZONE D'EXERCICE (S'affiche EN BAS après clic)
      ============================================ --}}
 <div id="exerciseArea" class="card" style="display:none;">
-    <button class="closeBtn" onclick="cancelExercise()">✕</button>
+    <button class="closeBtn" onclick="cancelExercise()" aria-label="Fermer">✕</button>
     
     <h3 id="exerciseTitle">Exercice en cours</h3>
     
@@ -237,7 +237,7 @@
 </div>
 
 {{-- ============================================
-     ZONE DE RÉSULTAT (Cachée par défaut)
+     ZONE DE RÉSULTAT (S'affiche EN BAS après validation)
      ============================================ --}}
 <div id="exerciseResult" class="card" style="display:none;">
     <div class="resultAnimation">🎉</div>
@@ -246,9 +246,12 @@
     <button class="btn full" onclick="finishExercise()">Terminer</button>
 </div>
 
+@endsection
+
 {{-- ============================================
-     TEMPLATES HTML POUR CHAQUE EXERCICE
+     TEMPLATES HTML (EN BAS DU FICHIER)
      ============================================ --}}
+@section('templates')
 
 {{-- Template: Exercice Visage-Nom --}}
 <template id="templateFaceName">
@@ -308,6 +311,64 @@
     </div>
 </template>
 
+{{-- Template: Exercice Mémoire --}}
+<template id="templateMemory">
+    <div class="exerciseInstructions">
+        <p><strong>Mémorisez ces 3 symboles pendant 5 secondes</strong></p>
+    </div>
+    
+    <div style="font-size:4rem; text-align:center; margin:32px 0;">
+        🍎 🔑 🌼
+    </div>
+    
+    <div class="timer">
+        <span class="muted">Temps restant:</span>
+        <strong id="memoryTimer">5</strong>
+        <span class="muted">secondes</span>
+    </div>
+</template>
+
+{{-- Template: Exercice Attention --}}
+<template id="templateAttention">
+    <div class="exerciseInstructions">
+        <p><strong>Cliquez sur tous les triangles (▲)</strong></p>
+    </div>
+    
+    <div class="emojiGrid">
+        <button class="emojiBtn" onclick="pickSymbol('▲', this)">▲</button>
+        <button class="emojiBtn" onclick="pickSymbol('●', this)">●</button>
+        <button class="emojiBtn" onclick="pickSymbol('■', this)">■</button>
+        <button class="emojiBtn" onclick="pickSymbol('●', this)">●</button>
+        <button class="emojiBtn" onclick="pickSymbol('▲', this)">▲</button>
+        <button class="emojiBtn" onclick="pickSymbol('■', this)">■</button>
+        <button class="emojiBtn" onclick="pickSymbol('●', this)">●</button>
+        <button class="emojiBtn" onclick="pickSymbol('▲', this)">▲</button>
+        <button class="emojiBtn" onclick="pickSymbol('■', this)">■</button>
+    </div>
+</template>
+
+{{-- Template: Exercice Orientation --}}
+<template id="templateOrientation">
+    <div class="exerciseInstructions">
+        <p><strong>Quel jour sommes-nous ?</strong></p>
+    </div>
+    
+    <div class="pillRow">
+        <button class="pill" onclick="selectOption('lundi', this)">Lundi</button>
+        <button class="pill" onclick="selectOption('mardi', this)">Mardi</button>
+        <button class="pill" onclick="selectOption('mercredi', this)">Mercredi</button>
+        <button class="pill" onclick="selectOption('jeudi', this)">Jeudi</button>
+        <button class="pill" onclick="selectOption('vendredi', this)">Vendredi</button>
+        <button class="pill" onclick="selectOption('samedi', this)">Samedi</button>
+        <button class="pill" onclick="selectOption('dimanche', this)">Dimanche</button>
+    </div>
+    
+    <div class="timer">
+        <span class="muted">Réponse choisie:</span>
+        <strong id="selectedAnswer">—</strong>
+    </div>
+</template>
+
 {{-- Template: Exercice Réminiscence --}}
 <template id="templateReminiscence">
     <div class="reminiscenceContent">
@@ -329,6 +390,62 @@
         </div>
         
         <p class="muted">Prenez le temps de discuter de ces souvenirs avec votre aidant</p>
+    </div>
+</template>
+
+{{-- Template: Exercice Jeux de mots --}}
+<template id="templateWordGames">
+    <div class="exerciseInstructions">
+        <p><strong>Trouvez 5 fruits</strong></p>
+    </div>
+    
+    <div class="field">
+        <label>Fruit 1:</label>
+        <input type="text" class="input wordInput" placeholder="Ex: pomme">
+    </div>
+    <div class="field">
+        <label>Fruit 2:</label>
+        <input type="text" class="input wordInput" placeholder="Ex: banane">
+    </div>
+    <div class="field">
+        <label>Fruit 3:</label>
+        <input type="text" class="input wordInput" placeholder="Ex: orange">
+    </div>
+    <div class="field">
+        <label>Fruit 4:</label>
+        <input type="text" class="input wordInput" placeholder="Ex: fraise">
+    </div>
+    <div class="field">
+        <label>Fruit 5:</label>
+        <input type="text" class="input wordInput" placeholder="Ex: raisin">
+    </div>
+</template>
+
+{{-- Template: Exercice Calculs simples --}}
+<template id="templateSimpleCalc">
+    <div class="exerciseInstructions">
+        <p><strong>Répondez à ces calculs simples</strong></p>
+    </div>
+    
+    <div class="field">
+        <label>5 + 3 = ?</label>
+        <input type="number" class="input calcInput" placeholder="Votre réponse">
+    </div>
+    <div class="field">
+        <label>12 - 4 = ?</label>
+        <input type="number" class="input calcInput" placeholder="Votre réponse">
+    </div>
+    <div class="field">
+        <label>7 + 6 = ?</label>
+        <input type="number" class="input calcInput" placeholder="Votre réponse">
+    </div>
+    <div class="field">
+        <label>15 - 8 = ?</label>
+        <input type="number" class="input calcInput" placeholder="Votre réponse">
+    </div>
+    <div class="field">
+        <label>9 + 4 = ?</label>
+        <input type="number" class="input calcInput" placeholder="Votre réponse">
     </div>
 </template>
 
@@ -443,6 +560,39 @@
     </div>
 </template>
 
+{{-- Template: Exercice Séquence --}}
+<template id="templateSequence">
+    <div class="exerciseInstructions">
+        <p><strong>Remettez les étapes dans le bon ordre</strong></p>
+    </div>
+    
+    <div class="sequenceItems">
+        <div class="sequenceItem" draggable="true" data-order="3">
+            <span class="sequenceHandle">☰</span>
+            <img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=80&h=60&fit=crop" alt="Étape 3">
+            <span>Mettre du savon</span>
+        </div>
+        
+        <div class="sequenceItem" draggable="true" data-order="1">
+            <span class="sequenceHandle">☰</span>
+            <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=80&h=60&fit=crop" alt="Étape 1">
+            <span>Ouvrir le robinet</span>
+        </div>
+        
+        <div class="sequenceItem" draggable="true" data-order="5">
+            <span class="sequenceHandle">☰</span>
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=60&fit=crop" alt="Étape 5">
+            <span>Rincer</span>
+        </div>
+        
+        <div class="sequenceItem" draggable="true" data-order="2">
+            <span class="sequenceHandle">☰</span>
+            <img src="https://images.unsplash.com/photo-1556909212-92e7b5be72e0?w=80&h=60&fit=crop" alt="Étape 2">
+            <span>Mouiller les mains</span>
+        </div>
+    </div>
+</template>
+
 {{-- Template: Exercice Musicothérapie --}}
 <template id="templateMusicTherapy">
     <div class="musicTherapyContent">
@@ -488,6 +638,13 @@
         <p class="muted">Écoutez la musique et bougez au rythme si vous le souhaitez</p>
     </div>
 </template>
+
+
+
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/exo.css') }}">
+@endpush
 
 @push('scripts')
 <script src="{{ asset('js/modules/exercises.js') }}"></script>

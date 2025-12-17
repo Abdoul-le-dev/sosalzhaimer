@@ -65,4 +65,5 @@
 
 @push('scripts')
 <script src="{{ asset('../js/modules/home.js') }}"></script>
+<script src="{{ asset('js/modules/app.js') }}"></script>
 @endpush

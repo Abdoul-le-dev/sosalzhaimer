@@ -30,6 +30,8 @@
         <main id="content">
             @yield('content')
         </main>
+
+        @yield('templates')
         
         {{-- Navigation bottom --}}
         @include('components.navigation')
@@ -42,9 +44,9 @@
     <div class="toasts"></div>
     
     {{-- JS global --}}
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/modules/app.js') }}"></script>
 
-    <script src="{{ asset('js/modules/exercises.js') }}"></script>
+
     
     {{-- JS modulaire --}}
     @stack('scripts')
