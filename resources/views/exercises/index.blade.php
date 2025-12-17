@@ -490,7 +490,7 @@
 </template>
 
 @push('scripts')
-<script src="{{ asset('js/modules/exercice.js') }}"></script>
+<script src="{{ asset('js/modules/exercises.js') }}"></script>
 @endpush
 
 @endsection
