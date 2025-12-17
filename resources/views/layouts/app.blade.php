@@ -15,6 +15,7 @@
     
     {{-- CSS global --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+     <link rel="stylesheet" href="{{ asset('css/exo.css') }}">
     
     {{-- CSS modulaire --}}
     @stack('styles')
