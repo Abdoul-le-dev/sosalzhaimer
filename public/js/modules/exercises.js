@@ -17,6 +17,8 @@ let draggedElement = null;
  * DÉMARRAGE D'UN EXERCICE
  * ===========================
  */
+
+alert('js')
 function startExercise(type) {
     showToast('Chargement de l\'exercice...');
     
