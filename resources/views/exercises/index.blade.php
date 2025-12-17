@@ -489,4 +489,8 @@
     </div>
 </template>
 
+@push('scripts')
+<script src="{{ asset('js/modules/exercice.js') }}"></script>
+@endpush
+
 @endsection
